@@ -56,16 +56,19 @@ const nextConfig = {
 
   // Redirect www to non-www (optional)
   async redirects() {
+    const domain = process.env.NEXT_PUBLIC_SITE_URL || 'https://auxiliumconsult.com'
+    const cleanDomain = domain.replace('https://', '').replace('http://', '')
+    
     return [
       {
         source: '/:path*',
         has: [
           {
             type: 'host',
-            value: 'www.auxiliumconsult.com',
+            value: `www.${cleanDomain}`,
           },
         ],
-        destination: 'https://auxiliumconsult.com/:path*',
+        destination: `${domain}/:path*`,
         permanent: true,
       },
     ]

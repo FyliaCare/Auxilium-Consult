@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://auxiliumconsult.com'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://auxiliumconsult.com'
   
   return [
     {
