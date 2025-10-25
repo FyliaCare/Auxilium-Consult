@@ -1,7 +1,6 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import type { Metadata } from 'next'
 import FadeInWhenVisible from '@/components/FadeInWhenVisible'
 import AnimatedCounter from '@/components/AnimatedCounter'
 

@@ -1,10 +1,25 @@
+import dynamic from 'next/dynamic'
 import Hero from '@/components/Hero'
-import About from '@/components/About'
-import Services from '@/components/Services'
-import Testimonials from '@/components/Testimonials'
-import CaseStudies from '@/components/CaseStudies'
-import FAQ from '@/components/FAQ'
-import Contact from '@/components/Contact'
+
+// Lazy load components that are below the fold
+const About = dynamic(() => import('@/components/About'), {
+  loading: () => <div className="h-96 bg-gray-50 animate-pulse" />
+})
+const Services = dynamic(() => import('@/components/Services'), {
+  loading: () => <div className="h-96 bg-white animate-pulse" />
+})
+const Testimonials = dynamic(() => import('@/components/Testimonials'), {
+  loading: () => <div className="h-96 bg-gray-50 animate-pulse" />
+})
+const CaseStudies = dynamic(() => import('@/components/CaseStudies'), {
+  loading: () => <div className="h-96 bg-white animate-pulse" />
+})
+const FAQ = dynamic(() => import('@/components/FAQ'), {
+  loading: () => <div className="h-96 bg-white animate-pulse" />
+})
+const Contact = dynamic(() => import('@/components/Contact'), {
+  loading: () => <div className="h-96 bg-gray-50 animate-pulse" />
+})
 
 export default function Home() {
   return (
