@@ -11,5 +11,7 @@ services:
         value: production
       - key: NEXT_TELEMETRY_DISABLED
         value: 1
+      - key: NEXT_PUBLIC_SITE_URL
+        value: https://auxilium-consult.onrender.com
     healthCheckPath: /
     autoDeploy: true

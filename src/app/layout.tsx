@@ -13,7 +13,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://auxiliumconsult.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://auxilium-consult.onrender.com'),
   title: {
     default: 'Auxilium Consult - Business Advisory & Investment Facilitation in Ghana',
     template: '%s | Auxilium Consult'
