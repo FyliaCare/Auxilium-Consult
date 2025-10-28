@@ -4,6 +4,7 @@ import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { WebVitals } from '@/components/WebVitals'
+import { Providers } from '@/components/Providers'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -74,10 +75,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <WebVitals />
-        <Header />
-        {children}
-        <Footer />
+        <Providers>
+          <WebVitals />
+          <Header />
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   )
