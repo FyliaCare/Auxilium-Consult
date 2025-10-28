@@ -63,7 +63,7 @@ export async function GET(
       currentStage: project.currentStage,
       startDate: project.startDate.toISOString(),
       targetCloseDate: project.targetCloseDate?.toISOString() || null,
-      milestones: project.milestones.map((m: Milestone) => ({
+      milestones: project.milestones.map((m: MilestoneType) => ({
         id: m.id,
         title: m.title,
         description: m.description,
@@ -71,7 +71,7 @@ export async function GET(
         completedDate: m.completedDate?.toISOString() || null,
         isCompleted: m.isCompleted,
       })),
-      updates: project.updates.map((u: ProjectUpdate) => ({
+      updates: project.updates.map((u: ProjectUpdateType) => ({
         id: u.id,
         title: u.title,
         description: u.description,

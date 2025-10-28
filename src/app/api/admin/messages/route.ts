@@ -2,11 +2,17 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { Message, Client } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
 
-type MessageWithClient = Message & {
-  client: Pick<Client, 'companyName'>
-}
+type MessageWithClient = Prisma.MessageGetPayload<{
+  include: {
+    client: {
+      select: {
+        companyName: true
+      }
+    }
+  }
+}>
 
 export async function GET() {
   try {
