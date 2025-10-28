@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { sendEmail, emailTemplates } from '@/lib/email'
 
 export async function POST(
   request: NextRequest,
@@ -34,6 +35,32 @@ export async function POST(
         createdBy: session.user.id,
       }
     })
+
+    // Get project with client info for email notification
+    const project = await prisma.project.findUnique({
+      where: { id: resolvedParams.id },
+      include: {
+        client: {
+          include: {
+            user: true
+          }
+        }
+      }
+    })
+
+    // Send email notification to client if email is configured
+    if (project?.client?.user?.email && process.env.RESEND_API_KEY) {
+      await sendEmail({
+        to: project.client.user.email,
+        subject: `Project Update: ${project.projectName}`,
+        html: emailTemplates.projectUpdate(
+          project.client.contactPerson,
+          project.projectName,
+          title,
+          description
+        )
+      }).catch(console.error) // Don't fail if email fails
+    }
 
     return NextResponse.json({
       success: true,

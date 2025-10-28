@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { sendEmail, emailTemplates } from '@/lib/email'
 
 // DELETE /api/admin/projects/[id]/milestones/[milestoneId] - Delete a milestone
 export async function DELETE(
@@ -107,8 +108,35 @@ export async function PUT(
         ...(dueDate !== undefined && { dueDate: dueDate ? new Date(dueDate) : null }),
         ...(isCompleted !== undefined && { isCompleted }),
         ...(order !== undefined && { order }),
+      },
+      include: {
+        project: {
+          include: {
+            client: {
+              include: {
+                user: true
+              }
+            }
+          }
+        }
       }
     })
+
+    // Send email if milestone was marked as completed
+    if (isCompleted === true && !existingMilestone.isCompleted && process.env.RESEND_API_KEY) {
+      const clientEmail = updatedMilestone.project?.client?.user?.email
+      if (clientEmail) {
+        await sendEmail({
+          to: clientEmail,
+          subject: `Milestone Completed: ${updatedMilestone.title}`,
+          html: emailTemplates.milestoneCompleted(
+            updatedMilestone.project.client.contactPerson,
+            updatedMilestone.project.projectName,
+            updatedMilestone.title
+          )
+        }).catch(console.error)
+      }
+    }
 
     return NextResponse.json(updatedMilestone)
 
