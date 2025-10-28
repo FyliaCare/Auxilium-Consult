@@ -17,11 +17,16 @@ To become Africa's leading investment facilitation and growth partner — bridgi
 - **Framework**: Next.js 15.5.6 with App Router
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
+- **Database**: PostgreSQL (Neon) with Prisma ORM
+- **Authentication**: NextAuth.js v4.24.12
+- **Password Hashing**: bcryptjs
+- **Deployment**: Vercel (recommended) or Render
 - **Build Tool**: Next.js built-in compiler
 - **Linting**: ESLint with Next.js configuration
 
 ## Features
 
+### Public Website
 - 🚀 **Modern, responsive design** with Tailwind CSS
 - 📱 **Mobile-first approach** for optimal viewing on all devices
 - ⚡ **Server-side rendering** with Next.js for fast page loads
@@ -29,26 +34,80 @@ To become Africa's leading investment facilitation and growth partner — bridgi
 - 🎨 **Professional color scheme** and branding
 - 📝 **Interactive contact forms** with API integration
 - 🌟 **Clean component architecture** for maintainability
-- 💼 **Client portal** with secure login interface
-- 📊 **Case studies** and success stories
+-  **Case studies** and success stories
 - ⭐ **Client testimonials** showcase
 - ❓ **FAQ section** with collapsible answers
 - 📰 **Insights/Blog** section for thought leadership
-- 🔒 **API routes** for form handling and data processing
+
+### Admin Portal
+- � **Secure authentication** with role-based access
+- 📊 **Dashboard** with live statistics and metrics
+- 👥 **Client management** with search and filtering
+- 💼 **Project tracking** with 5-stage workflow
+- 📁 **Document management** system
+- 💬 **Messaging center** for client communication
+- 📈 **Funding progress** visualization
+- 🔔 **Activity logging** for audit trails
+
+### Client Portal
+- 🔒 **Secure client login** with JWT sessions
+- 📋 **Project dashboard** with real-time updates
+- 💰 **Funding status** tracking and visualization
+- 📄 **Document library** access
+- 📧 **Direct messaging** with advisory team
+- 📊 **5-stage progress** indicators
+- 🎯 **Milestone tracking** for projects
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 16.8 or later
-- npm or yarn package manager
+- Node.js 18.17 or later
+- npm 9.0 or later
+- PostgreSQL database (Neon recommended)
 
 ### Installation
 
-1. Clone the repository or ensure you're in the project directory
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/FyliaCare/Auxilium-Consult.git
+   cd Auxilium-Consult
+   ```
+
 2. Install dependencies:
    ```bash
    npm install
+   ```
+
+3. Set up environment variables:
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Edit `.env` and add your configuration:
+   ```bash
+   # Database - Get from https://neon.tech
+   DATABASE_URL="postgresql://user:pass@host.neon.tech/db?sslmode=require"
+   DIRECT_URL="postgresql://user:pass@host.neon.tech/db?sslmode=require"
+   
+   # NextAuth
+   NEXTAUTH_SECRET="generate-with-openssl-rand-base64-32"
+   NEXTAUTH_URL="http://localhost:3000"
+   
+   # Site URL
+   NEXT_PUBLIC_SITE_URL="http://localhost:3000"
+   ```
+
+4. Set up the database:
+   ```bash
+   # Generate Prisma Client
+   npx prisma generate
+   
+   # Run migrations
+   npx prisma migrate dev --name init
+   
+   # Seed demo data
+   npx prisma db seed
    ```
 
 ### Development
@@ -59,7 +118,11 @@ Start the development server:
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+**Demo Credentials:**
+- **Admin**: `admin@auxiliumconsult.com` / `Admin@2025`
+- **Client**: `demo@example.com` / `Demo@2025`
 
 ### Building for Production
 
@@ -75,37 +138,82 @@ Start the production server:
 npm start
 ```
 
+## Deployment
+
+### Deploy to Vercel (Recommended)
+
+1. **Connect GitHub Repository**
+   - Go to [vercel.com](https://vercel.com)
+   - Click "Import Project"
+   - Select your repository
+
+2. **Configure Environment Variables**
+   Add these in Vercel Dashboard:
+   ```
+   DATABASE_URL=your-neon-connection-string
+   DIRECT_URL=your-neon-direct-connection-string
+   NEXTAUTH_SECRET=your-production-secret
+   NEXTAUTH_URL=https://your-domain.vercel.app
+   NEXT_PUBLIC_SITE_URL=https://your-domain.vercel.app
+   ```
+
+3. **Deploy**
+   - Click "Deploy"
+   - Vercel will automatically build and deploy
+
+For detailed deployment instructions, see [NEON_DEPLOYMENT.md](./NEON_DEPLOYMENT.md)
+
+### Database Setup (Neon PostgreSQL)
+
+1. Create account at [neon.tech](https://neon.tech)
+2. Create a new project
+3. Copy connection strings
+4. Add to environment variables
+5. Run migrations: `npx prisma migrate deploy`
+
+See [NEON_DEPLOYMENT.md](./NEON_DEPLOYMENT.md) for complete guide.
+
+## Documentation
+
+- [Features Documentation](./FEATURES.md) - Complete feature overview
+- [Quick Start Guide](./QUICKSTART.md) - Setup and testing
+- [Neon Deployment](./NEON_DEPLOYMENT.md) - Production deployment guide
+
 ## Project Structure
 
 ```
 src/
 ├── app/
-│   ├── about/
-│   │   └── page.tsx           # About Us page
+│   ├── about/               # About Us page
+│   ├── admin/               # Admin portal
+│   │   ├── dashboard/       # Admin dashboard
+│   │   ├── clients/         # Client management
+│   │   ├── projects/        # Project management
+│   │   ├── documents/       # Document management
+│   │   └── messages/        # Message center
 │   ├── api/
-│   │   └── contact/
-│   │       └── route.ts       # Contact form API endpoint
-│   ├── client-portal/
-│   │   └── page.tsx           # Client portal login page
-│   ├── contact/
-│   │   └── page.tsx           # Contact page with form
-│   ├── insights/
-│   │   └── page.tsx           # Blog/Insights page
-│   ├── services/
-│   │   └── page.tsx           # Services detail page
-│   ├── globals.css            # Global styles with Tailwind
-│   ├── layout.tsx             # Root layout with header and footer
-│   └── page.tsx               # Homepage
-├── components/
-│   ├── About.tsx              # About section component
-│   ├── CaseStudies.tsx        # Success stories component
-│   ├── Contact.tsx            # Contact form and information
-│   ├── FAQ.tsx                # Frequently asked questions
-│   ├── Footer.tsx             # Website footer
-│   ├── Header.tsx             # Navigation header
-│   ├── Hero.tsx               # Hero section
-│   ├── Services.tsx           # Services showcase
-│   └── Testimonials.tsx       # Client testimonials
+│   │   ├── auth/            # NextAuth endpoints
+│   │   ├── admin/           # Admin API routes
+│   │   └── client/          # Client API routes
+│   ├── auth/                # Authentication pages
+│   ├── client/              # Client portal
+│   │   ├── dashboard/       # Client dashboard
+│   │   ├── documents/       # Document library
+│   │   └── messages/        # Client messaging
+│   ├── contact/             # Contact page
+│   ├── insights/            # Blog/Insights
+│   └── services/            # Services page
+├── components/              # Reusable React components
+├── lib/
+│   ├── auth.ts             # NextAuth configuration
+│   └── prisma.ts           # Prisma client
+├── types/                   # TypeScript type definitions
+└── middleware.ts            # Route protection
+
+prisma/
+├── schema.prisma            # Database schema
+├── migrations/              # Database migrations
+└── seed.ts                  # Demo data seeder
 ```
 
 ## Services Offered
@@ -127,9 +235,12 @@ src/
 ## Available Scripts
 
 - `npm run dev` - Start development server
-- `npm run build` - Create production build
+- `npm run build` - Create production build with Prisma generation
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
+- `npm run migrate:deploy` - Run database migrations in production
+- `npm run db:seed` - Seed database with demo data
+- `npm run db:studio` - Open Prisma Studio for database management
 
 ## Contact Information
 

@@ -8,10 +8,16 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start -p $PORT",
+    "build": "prisma generate && next build",
+    "start": "next start",
     "lint": "next lint",
-    "postinstall": "next telemetry disable"
+    "postinstall": "prisma generate",
+    "migrate:deploy": "prisma migrate deploy",
+    "db:seed": "prisma db seed",
+    "db:studio": "prisma studio"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.18.0",
