@@ -2,6 +2,11 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { Project, Client } from '@prisma/client'
+
+type ProjectWithClient = Project & {
+  client: Pick<Client, 'companyName'>
+}
 
 export async function GET() {
   try {
@@ -24,7 +29,7 @@ export async function GET() {
       }
     })
 
-    const formattedProjects = projects.map(project => ({
+    const formattedProjects = projects.map((project: ProjectWithClient) => ({
       id: project.id,
       projectName: project.projectName,
       clientName: project.client.companyName,

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { Message } from '@prisma/client'
 
 export async function GET() {
   try {
@@ -21,7 +22,7 @@ export async function GET() {
     })
 
     return NextResponse.json(
-      messages.map(msg => ({
+      messages.map((msg: Message) => ({
         id: msg.id,
         subject: msg.subject,
         content: msg.content,

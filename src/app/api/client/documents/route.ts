@@ -2,6 +2,11 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { Document, Project } from '@prisma/client'
+
+type DocumentWithProject = Document & {
+  project: Pick<Project, 'projectName'> | null
+}
 
 export async function GET() {
   try {
@@ -30,7 +35,7 @@ export async function GET() {
     })
 
     return NextResponse.json(
-      documents.map(doc => ({
+      documents.map((doc: DocumentWithProject) => ({
         id: doc.id,
         title: doc.description || doc.fileName,
         fileName: doc.fileName,

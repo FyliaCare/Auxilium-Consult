@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { Milestone, ProjectUpdate } from '@prisma/client'
 
 export async function GET(
   request: Request,
@@ -59,7 +60,7 @@ export async function GET(
       currentStage: project.currentStage,
       startDate: project.startDate.toISOString(),
       targetCloseDate: project.targetCloseDate?.toISOString() || null,
-      milestones: project.milestones.map(m => ({
+      milestones: project.milestones.map((m: Milestone) => ({
         id: m.id,
         title: m.title,
         description: m.description,
@@ -67,7 +68,7 @@ export async function GET(
         completedDate: m.completedDate?.toISOString() || null,
         isCompleted: m.isCompleted,
       })),
-      updates: project.updates.map(u => ({
+      updates: project.updates.map((u: ProjectUpdate) => ({
         id: u.id,
         title: u.title,
         description: u.description,
