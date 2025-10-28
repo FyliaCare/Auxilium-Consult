@@ -5,7 +5,7 @@ This guide walks you through deploying the Auxilium Consult backend to Neon Post
 ## Prerequisites
 
 - [Neon Account](https://neon.tech) (Free tier available)
-- [Vercel Account](https://vercel.com) or [Render Account](https://render.com) for hosting
+- [Render Account](https://render.com) for hosting
 - Git repository pushed to GitHub
 
 ## Step 1: Create Neon PostgreSQL Database
@@ -85,48 +85,123 @@ This creates:
 - Demo client: `demo@example.com` / `Demo@2025`
 - Sample project with milestones
 
-## Step 4: Deploy to Vercel (Recommended)
+## Step 4: Deploy to Render
 
-### 4.1 Connect Repository
-1. Go to [vercel.com](https://vercel.com)
-2. Click "Import Project"
-3. Select your GitHub repository
-4. Vercel will auto-detect Next.js
+### 4.1 Create Web Service
+1. Go to [render.com](https://render.com)
+2. Click "New +" → "Web Service"
+3. Connect your GitHub repository (FyliaCare/Auxilium-Consult)
+4. Configure the service:
+   - **Name**: `auxilium-consult`
+   - **Region**: Choose closest to your users (e.g., Frankfurt for Europe)
+   - **Branch**: `main`
+   - **Root Directory**: (leave empty)
+   - **Environment**: `Node`
+   - **Build Command**: `npm install && npx prisma generate && npx prisma migrate deploy && npm run build`
+   - **Start Command**: `npm start`
+   - **Instance Type**: Free (or upgrade as needed)
 
 ### 4.2 Configure Environment Variables
-In Vercel Dashboard → Settings → Environment Variables, add:
+In Render Dashboard → Environment, add these variables:
 
 ```
-DATABASE_URL=postgresql://username:password@your-neon-host.neon.tech/neondb?sslmode=require
-DIRECT_URL=postgresql://username:password@your-neon-host.neon.tech/neondb?sslmode=require&options=endpoint%3Dxxx
+DATABASE_URL=postgresql://neondb_owner:npg_EgzP5eTrd3AN@ep-bitter-bonus-agz28n2t-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require
+DIRECT_URL=postgresql://neondb_owner:npg_EgzP5eTrd3AN@ep-bitter-bonus-agz28n2t-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require
 NEXTAUTH_SECRET=your-production-secret-key-here
-NEXTAUTH_URL=https://your-domain.vercel.app
-NEXT_PUBLIC_SITE_URL=https://your-domain.vercel.app
+NEXTAUTH_URL=https://auxilium-consult.onrender.com
+NEXT_PUBLIC_SITE_URL=https://auxilium-consult.onrender.com
+```
+
+**Generate a secure NEXTAUTH_SECRET:**
+```bash
+openssl rand -base64 32
 ```
 
 ### 4.3 Deploy
-1. Click "Deploy"
-2. Wait for build to complete
-3. Your site will be live at `https://your-project.vercel.app`
+1. Click "Create Web Service"
+2. Render will automatically:
+   - Install dependencies
+   - Generate Prisma Client
+   - Run database migrations
+   - Build Next.js application
+   - Start the server
+3. Your site will be live at `https://auxilium-consult.onrender.com`
 
-## Step 5: Run Database Migrations in Production
+### 4.4 Enable Auto-Deploy
+- Auto-deploy is enabled by default
+- Every push to `main` branch will trigger a new deployment
+- Migrations run automatically during build
 
-### Option A: Using Vercel CLI
+## Step 5: Post-Deployment Setup
+
+### 5.1 Verify Deployment
+1. Visit: `https://auxilium-consult.onrender.com`
+2. Check that the homepage loads correctly
+
+### 5.2 Test Admin Authentication
+1. Go to `https://auxilium-consult.onrender.com/auth/admin-signin`
+2. Login with: `admin@auxiliumconsult.com` / `Admin@2025`
+3. Verify dashboard loads with live data
+
+### 5.3 Test Client Portal
+1. Go to `https://auxilium-consult.onrender.com/auth/signin`
+2. Login with: `demo@example.com` / `Demo@2025`
+3. Verify client dashboard and projects load
+
+### 5.4 Custom Domain (Optional)
+1. In Render Dashboard → Settings → Custom Domains
+2. Add your domain (e.g., `auxiliumconsult.com`)
+3. Update DNS records as shown by Render
+4. Update environment variables:
+   ```
+   NEXTAUTH_URL=https://auxiliumconsult.com
+   NEXT_PUBLIC_SITE_URL=https://auxiliumconsult.com
+   ```
+5. SSL certificate is automatically provisioned
+
+## Step 6: Database Management
+
+### 6.1 Manual Migrations
+If you need to run migrations manually:
 ```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Login
-vercel login
-
-# Run migration
-vercel env pull .env.production
+# In Render Shell (Dashboard → Shell tab)
 npx prisma migrate deploy
 ```
 
-### Option B: Using GitHub Actions (Recommended)
+### 6.2 Seed Production Database
+```bash
+# In Render Shell
+npx prisma db seed
+```
 
-Create `.github/workflows/migrate.yml`:
+### 6.3 View Database
+```bash
+# Use Prisma Studio locally with production database
+DATABASE_URL="your-neon-url" npx prisma studio
+```
+
+## Step 7: Monitoring and Logs
+
+### 7.1 View Logs
+- Render Dashboard → Logs tab
+- View real-time application logs
+- Filter by deploy, build, or runtime logs
+
+### 7.2 Performance Monitoring
+- Render Dashboard → Metrics tab
+- Monitor CPU, memory, and bandwidth usage
+- Track response times
+
+### 7.3 Health Checks
+Render automatically pings your app to ensure it's running. Configure in:
+- Dashboard → Settings → Health Check Path
+- Suggested path: `/api/health`
+
+## Alternative: GitHub Actions for Migrations
+
+If you prefer to run migrations separately from deployments:
+
+### Update `.github/workflows/migrate.yml`:
 
 ```yaml
 name: Database Migration
@@ -159,63 +234,64 @@ jobs:
 
 Add `DATABASE_URL` to GitHub Secrets (Settings → Secrets and variables → Actions)
 
-## Alternative: Deploy to Render
+## Render-Specific Features
 
-### 1. Create Web Service
-1. Go to [render.com](https://render.com)
-2. Click "New +" → "Web Service"
-3. Connect your GitHub repository
+### 1. Background Workers
+For long-running tasks, create a Background Worker:
+- Dashboard → New → Background Worker
+- Use same repository
+- Set command: `npm run worker` (if you create worker scripts)
 
-### 2. Configure Service
-- **Name**: auxilium-consult
-- **Environment**: Node
-- **Build Command**: `npm install && npx prisma generate && npm run build`
-- **Start Command**: `npm start`
+### 2. Cron Jobs
+Schedule tasks in Render:
+- Dashboard → New → Cron Job
+- Example: Daily database cleanup
+- Command: `npx tsx scripts/cleanup.ts`
 
-### 3. Add Environment Variables
-```
-DATABASE_URL=your-neon-connection-string
-DIRECT_URL=your-neon-direct-connection-string
-NEXTAUTH_SECRET=your-secret-key
-NEXTAUTH_URL=https://your-app.onrender.com
-NEXT_PUBLIC_SITE_URL=https://your-app.onrender.com
-```
+### 3. Private Services
+For internal APIs:
+- Create as Private Service
+- Only accessible within Render network
+- No public URL
 
-### 4. Add Build Hook for Migrations
-In Render Dashboard:
-1. Go to "Settings" → "Build & Deploy"
-2. Add a deploy hook
-3. Trigger it after migrations
-
-## Step 6: Verify Deployment
-
-### 6.1 Check Database Connection
-Visit: `https://your-domain.com/api/health`
-
-You should see: `{"status":"ok"}`
-
-### 6.2 Test Authentication
-1. Go to `https://your-domain.com/auth/admin-signin`
-2. Login with admin credentials
-3. Verify dashboard loads
-
-### 6.3 Test Client Portal
-1. Go to `https://your-domain.com/auth/signin`
-2. Login with demo client credentials
-3. Verify client dashboard loads
+### 4. Persistent Disks
+For file uploads (if needed):
+- Add disk in Dashboard → Settings
+- Mount at `/data` or custom path
+- Data persists across deploys
 
 ## Troubleshooting
 
 ### Migration Errors
-If migrations fail:
+If migrations fail during Render build:
 ```bash
-# Force reset (WARNING: deletes all data)
-npx prisma migrate reset
-
-# Or create new migration
-npx prisma migrate dev --name fix_migration
+# Option 1: Run manually in Render Shell
 npx prisma migrate deploy
+
+# Option 2: Reset migrations (WARNING: deletes data)
+npx prisma migrate reset
 ```
+
+### Build Failures
+Check Render logs for specific errors:
+- Missing environment variables
+- Prisma generation failures
+- TypeScript compilation errors
+
+### Connection Pool Exhausted
+- Neon's pooled connection is already optimized
+- If issues persist, upgrade Neon plan
+- Or use connection pooling middleware
+
+### App Not Starting
+- Check Start Command: should be `npm start`
+- Verify PORT is not hardcoded (Render assigns dynamically)
+- Check logs for Node.js errors
+
+### Slow Cold Starts (Free Tier)
+- Free tier spins down after inactivity
+- Upgrade to paid plan for 24/7 availability
+- Or use external uptime monitor to ping every 14 minutes
 
 ### Connection Pool Exhausted
 Use Neon's pooled connection string (default) which handles serverless connections better.
@@ -310,13 +386,43 @@ psql $DATABASE_URL < backup.sql
 - Discord: https://discord.gg/neon
 - Support: support@neon.tech
 
-### Vercel Support
-- Docs: https://vercel.com/docs
-- Support: https://vercel.com/support
-
 ### Render Support
 - Docs: https://render.com/docs
+- Community: https://community.render.com
 - Support: https://render.com/support
+
+## Render Free Tier Limitations
+
+### Understand the Free Tier
+- **Spin down after 15 minutes** of inactivity
+- **Spin up time**: 30-60 seconds on first request
+- **750 hours/month** free (enough for 1 service 24/7)
+- **100 GB bandwidth/month**
+- **512 MB RAM**
+
+### Workarounds
+1. **Keep-Alive Service** (optional):
+   - Use service like UptimeRobot or Cron-Job.org
+   - Ping your app every 14 minutes
+   - Prevents spin-down
+
+2. **Upgrade to Paid** ($7/month):
+   - No spin-down
+   - Better performance
+   - Priority support
+
+## Cost Breakdown
+
+### Current Setup (Free)
+- ✅ Neon PostgreSQL: Free (0.5 GB storage)
+- ✅ Render Web Service: Free (with limitations)
+- ✅ GitHub: Free
+- **Total: $0/month**
+
+### Recommended Production (Paid)
+- Neon Launch: $19/month (better performance)
+- Render Starter: $7/month (no spin-down)
+- **Total: $26/month**
 
 ## Next Steps
 

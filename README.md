@@ -20,7 +20,7 @@ To become Africa's leading investment facilitation and growth partner — bridgi
 - **Database**: PostgreSQL (Neon) with Prisma ORM
 - **Authentication**: NextAuth.js v4.24.12
 - **Password Hashing**: bcryptjs
-- **Deployment**: Vercel (recommended) or Render
+- **Deployment**: Render
 - **Build Tool**: Next.js built-in compiler
 - **Linting**: ESLint with Next.js configuration
 
@@ -140,28 +140,43 @@ npm start
 
 ## Deployment
 
-### Deploy to Vercel (Recommended)
+### Deploy to Render
 
-1. **Connect GitHub Repository**
-   - Go to [vercel.com](https://vercel.com)
-   - Click "Import Project"
-   - Select your repository
+1. **Create Web Service**
+   - Go to [render.com](https://render.com)
+   - Click "New +" → "Web Service"
+   - Connect your GitHub repository: `FyliaCare/Auxilium-Consult`
 
-2. **Configure Environment Variables**
-   Add these in Vercel Dashboard:
+2. **Configure Service**
+   - **Name**: `auxilium-consult`
+   - **Region**: Frankfurt (or closest to your users)
+   - **Branch**: `main`
+   - **Build Command**: `npm install && npx prisma generate && npx prisma migrate deploy && npm run build`
+   - **Start Command**: `npm start`
+
+3. **Configure Environment Variables**
+   Add these in Render Dashboard → Environment:
    ```
-   DATABASE_URL=your-neon-connection-string
-   DIRECT_URL=your-neon-direct-connection-string
-   NEXTAUTH_SECRET=your-production-secret
-   NEXTAUTH_URL=https://your-domain.vercel.app
-   NEXT_PUBLIC_SITE_URL=https://your-domain.vercel.app
+   DATABASE_URL=postgresql://neondb_owner:npg_EgzP5eTrd3AN@ep-bitter-bonus-agz28n2t-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require
+   DIRECT_URL=postgresql://neondb_owner:npg_EgzP5eTrd3AN@ep-bitter-bonus-agz28n2t-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require
+   NEXTAUTH_SECRET=your-production-secret-here
+   NEXTAUTH_URL=https://auxilium-consult.onrender.com
+   NEXT_PUBLIC_SITE_URL=https://auxilium-consult.onrender.com
+   ```
+   
+   **Generate NEXTAUTH_SECRET:**
+   ```bash
+   openssl rand -base64 32
    ```
 
-3. **Deploy**
-   - Click "Deploy"
-   - Vercel will automatically build and deploy
+4. **Deploy**
+   - Click "Create Web Service"
+   - Render will automatically build and deploy
+   - Site will be live at `https://auxilium-consult.onrender.com`
 
 For detailed deployment instructions, see [NEON_DEPLOYMENT.md](./NEON_DEPLOYMENT.md)
+
+**Note**: Render free tier spins down after 15 minutes of inactivity. Consider upgrading to Render Starter ($7/month) for production use.
 
 ### Database Setup (Neon PostgreSQL)
 

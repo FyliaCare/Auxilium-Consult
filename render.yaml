@@ -2,16 +2,24 @@ services:
   - type: web
     name: auxilium-consult
     env: node
-    region: oregon
+    region: frankfurt  # Choose region closest to your users (or oregon, singapore, etc.)
     plan: free
-    buildCommand: npm install && npm run build
+    buildCommand: npm install && npx prisma generate && npx prisma migrate deploy && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
       - key: NEXT_TELEMETRY_DISABLED
         value: 1
+      - key: DATABASE_URL
+        sync: false  # Set this in Render Dashboard
+      - key: DIRECT_URL
+        sync: false  # Set this in Render Dashboard
+      - key: NEXTAUTH_SECRET
+        generateValue: true  # Auto-generate or set manually
+      - key: NEXTAUTH_URL
+        value: https://auxilium-consult.onrender.com
       - key: NEXT_PUBLIC_SITE_URL
         value: https://auxilium-consult.onrender.com
-    healthCheckPath: /
+    healthCheckPath: /api/health
     autoDeploy: true
