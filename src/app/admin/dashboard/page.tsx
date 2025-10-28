@@ -6,6 +6,9 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 interface DashboardStats {
   totalClients: number
   activeProjects: number

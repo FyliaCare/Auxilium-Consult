@@ -2,8 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 interface Message {
   id: string
@@ -18,6 +21,7 @@ interface Message {
 
 export default function AdminMessagesPage() {
   const { data: session, status } = useSession()
+  const router = useRouter()
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<'all' | 'unread'>('all')
@@ -25,12 +29,12 @@ export default function AdminMessagesPage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      redirect('/auth/admin-signin')
+      router.push('/auth/admin-signin')
     }
     if (session?.user?.role !== 'ADMIN') {
-      redirect('/')
+      router.push('/')
     }
-  }, [status, session])
+  }, [status, session, router])
 
   useEffect(() => {
     if (status === 'authenticated') {

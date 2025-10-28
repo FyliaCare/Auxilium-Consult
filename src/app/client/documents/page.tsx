@@ -2,8 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 interface Document {
   id: string
@@ -18,18 +21,19 @@ interface Document {
 
 export default function ClientDocumentsPage() {
   const { data: session, status } = useSession()
+  const router = useRouter()
   const [documents, setDocuments] = useState<Document[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      redirect('/auth/signin')
+      router.push('/auth/signin')
     }
     if (session?.user?.role !== 'CLIENT') {
-      redirect('/')
+      router.push('/')
     }
-  }, [status, session])
+  }, [status, session, router])
 
   useEffect(() => {
     if (status === 'authenticated') {

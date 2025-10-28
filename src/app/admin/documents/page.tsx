@@ -2,8 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 interface Document {
   id: string
@@ -20,6 +23,7 @@ interface Document {
 
 export default function AdminDocumentsPage() {
   const { data: session, status } = useSession()
+  const router = useRouter()
   const [documents, setDocuments] = useState<Document[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
@@ -27,12 +31,12 @@ export default function AdminDocumentsPage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      redirect('/auth/admin-signin')
+      router.push('/auth/admin-signin')
     }
     if (session?.user?.role !== 'ADMIN') {
-      redirect('/')
+      router.push('/')
     }
-  }, [status, session])
+  }, [status, session, router])
 
   useEffect(() => {
     if (status === 'authenticated') {

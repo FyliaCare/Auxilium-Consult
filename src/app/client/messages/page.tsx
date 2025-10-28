@@ -2,8 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 interface Message {
   id: string
@@ -16,6 +19,7 @@ interface Message {
 
 export default function ClientMessagesPage() {
   const { data: session, status } = useSession()
+  const router = useRouter()
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null)
@@ -24,12 +28,12 @@ export default function ClientMessagesPage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      redirect('/auth/signin')
+      router.push('/auth/signin')
     }
     if (session?.user?.role !== 'CLIENT') {
-      redirect('/')
+      router.push('/')
     }
-  }, [status, session])
+  }, [status, session, router])
 
   useEffect(() => {
     if (status === 'authenticated') {
