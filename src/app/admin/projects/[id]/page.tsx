@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { use } from 'react'
 
 export const dynamic = 'force-dynamic'
-export const revalidate = 0
 
 interface Milestone {
   id: string
