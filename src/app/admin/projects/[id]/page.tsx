@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { use } from 'react'
 
@@ -57,13 +57,7 @@ export default function AdminProjectDetailPage({ params }: { params: Promise<{ i
     }
   }, [status, session, router])
 
-  useEffect(() => {
-    if (status === 'authenticated' && session?.user?.role === 'ADMIN') {
-      fetchProjectDetail()
-    }
-  }, [status, session, resolvedParams.id])
-
-  const fetchProjectDetail = async () => {
+  const fetchProjectDetail = useCallback(async () => {
     try {
       const response = await fetch(`/api/admin/projects/${resolvedParams.id}`)
       if (response.ok) {
@@ -75,7 +69,13 @@ export default function AdminProjectDetailPage({ params }: { params: Promise<{ i
     } finally {
       setLoading(false)
     }
-  }
+  }, [resolvedParams.id])
+
+  useEffect(() => {
+    if (status === 'authenticated' && session?.user?.role === 'ADMIN') {
+      fetchProjectDetail()
+    }
+  }, [status, session, fetchProjectDetail])
 
   const getStatusBadge = (status: string) => {
     const colors: Record<string, string> = {
