@@ -6,52 +6,68 @@ import FadeInWhenVisible from './FadeInWhenVisible'
 export default function CaseStudies() {
   const cases = [
     {
-      title: "Solar Energy Expansion",
-      sector: "Energy",
-      client: "Confidential Solar Developer",
-      challenge: "A growing solar energy company needed $2.5M to expand operations and deploy new solar installations across three regions.",
-      solution: "We structured a hybrid financing package combining equity and debt, prepared comprehensive financial models, and facilitated introductions to impact investors focused on renewable energy.",
+      title: "Mechaso Rock-to-Wealth Project",
+      sector: "Industry / Mining",
+      client: "Mechaso Rock-to-Wealth",
+      challenge: "A waste rock recycling and supply chain industrialization initiative needed structured investment facilitation to drive sustainable construction in Ghana.",
+      solution: "We developed comprehensive project documentation, conducted feasibility analysis, and structured bankable investment frameworks to attract financing for sustainable industrial development.",
       results: [
-        "Secured $2.5M in 5 months",
-        "Successfully deployed 50 new solar installations",
-        "Created 120 jobs in rural communities",
-        "Achieved 15% IRR for investors"
+        "Developed investor-ready project structure",
+        "Positioned for sustainable construction impact",
+        "Created framework for waste-to-value transformation",
+        "Established supply chain industrialization model"
       ],
-      fundingAmount: "$2.5M",
-      timeline: "5 months",
-      icon: "⚡"
+      fundingAmount: "In Progress",
+      timeline: "Active",
+      icon: "♻️"
     },
     {
-      title: "Agribusiness Scale-Up",
+      title: "Olames Biochar & BioPellets Project",
+      sector: "Energy / Agribusiness",
+      client: "Olames",
+      challenge: "A renewable energy venture producing green fuels for industrial and agricultural applications required investment structuring and capital access.",
+      solution: "We structured the biochar and biopellets production project, prepared investor documentation, and facilitated connections with impact investors focused on renewable energy and sustainable agriculture.",
+      results: [
+        "Structured bankable renewable energy project",
+        "Positioned for green fuel production",
+        "Created dual-impact framework (industry + agriculture)",
+        "Developed sustainability metrics for investors"
+      ],
+      fundingAmount: "In Progress",
+      timeline: "Active",
+      icon: "🌱"
+    },
+    {
+      title: "GEM Cashew Pro",
       sector: "Agribusiness",
-      client: "Premium Food Processing SME",
-      challenge: "An established food processing company needed growth capital to upgrade facilities and expand distribution networks across West Africa.",
-      solution: "We conducted market analysis, developed investor-ready documentation, and connected the client with regional private equity firms specializing in agribusiness.",
+      client: "GEM Cashew Pro",
+      challenge: "An integrated cashew processing project with strong export potential needed structured investment facilitation to unlock local value addition and international market access.",
+      solution: "We developed comprehensive project structuring including financial modeling, market analysis, and investor-ready documentation for this value-addition agribusiness venture.",
       results: [
-        "Raised $1.2M Series A funding",
-        "Expanded to 4 new countries",
-        "Increased production capacity by 200%",
-        "Doubled revenue within 18 months"
+        "Structured integrated processing framework",
+        "Positioned for export market access",
+        "Created local value addition model",
+        "Developed investor engagement strategy"
       ],
-      fundingAmount: "$1.2M",
-      timeline: "4 months",
-      icon: "🌾"
+      fundingAmount: "In Progress",
+      timeline: "Active",
+      icon: "�"
     },
     {
-      title: "Mining Project Finance",
-      sector: "Mining",
-      client: "Gold Mining Operation",
-      challenge: "A mining company required $15M in project financing to develop a new gold extraction site and purchase modern equipment.",
-      solution: "We structured a complex project finance deal, conducted due diligence support, and negotiated favorable terms with international mining finance institutions.",
+      title: "ClickInsure (TransactShield Africa)",
+      sector: "FinTech / InsurTech",
+      client: "TransactShield Africa",
+      challenge: "A digital insurance platform revolutionizing policy access and management for individuals and businesses across Africa required strategic positioning and investment structuring.",
+      solution: "We provided strategic advisory and investment structuring for this integrated InsurTech solution, positioning it for scale across African markets with proper governance frameworks.",
       results: [
-        "Secured $15M project financing",
-        "Achieved 70% LTV on asset financing",
-        "Completed project 2 months ahead of schedule",
-        "Generated 300+ local jobs"
+        "Structured scalable InsurTech platform",
+        "Positioned for pan-African expansion",
+        "Developed digital transformation framework",
+        "Created investor-ready governance structure"
       ],
-      fundingAmount: "$15M",
-      timeline: "10 months",
-      icon: "⛏️"
+      fundingAmount: "In Progress",
+      timeline: "Active",
+      icon: "📱"
     }
   ]
 
@@ -60,9 +76,9 @@ export default function CaseStudies() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeInWhenVisible>
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Success Stories</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Current Portfolio Projects</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Real results from our investment facilitation and advisory work
+              Active projects demonstrating our commitment to sustainable growth and impact across Africa
             </p>
           </div>
         </FadeInWhenVisible>

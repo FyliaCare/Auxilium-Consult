@@ -14,12 +14,17 @@
     "postinstall": "next telemetry disable"
   },
   "dependencies": {
+    "@prisma/client": "^6.18.0",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^17.2.3",
     "framer-motion": "^12.23.24",
     "next": "^15.5.6",
+    "next-auth": "^4.24.12",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^18.3.26",
     "@types/react-dom": "^18.3.7",
@@ -28,7 +33,9 @@
     "eslint": "^8",
     "eslint-config-next": "15.0.2",
     "postcss": "^8",
+    "prisma": "^6.18.0",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.20.6",
     "typescript": "^5"
   }
 }

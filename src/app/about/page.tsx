@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion'
 import FadeInWhenVisible from '@/components/FadeInWhenVisible'
 import AnimatedCounter from '@/components/AnimatedCounter'
+import Leadership from '@/components/Leadership'
+import Partners from '@/components/Partners'
 
 export default function AboutPage() {
   return (
@@ -212,6 +214,30 @@ export default function AboutPage() {
             </a>
             <a href="/services" className="border-2 border-primary-600 text-primary-600 hover:bg-primary-50 px-8 py-3 rounded-lg font-semibold text-lg transition-colors">
               Our Services
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Leadership Section */}
+      <Leadership />
+
+      {/* Partners Section */}
+      <Partners />
+
+      {/* Closing Note */}
+      <section className="py-16 bg-primary-700 text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Building Africa&apos;s Success Stories</h2>
+          <p className="text-xl text-primary-100 mb-8 leading-relaxed">
+            Auxilium Consult remains committed to empowering businesses through access to strategic capital and sustainable growth solutions. We invite investors, entrepreneurs, and institutions to partner with us in building the next wave of Africa&apos;s success stories.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact" className="bg-white text-primary-700 hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold text-lg transition-colors">
+              Partner With Us
+            </a>
+            <a href="/insights" className="border-2 border-white text-white hover:bg-primary-600 px-8 py-3 rounded-lg font-semibold text-lg transition-colors">
+              Read Our Insights
             </a>
           </div>
         </div>

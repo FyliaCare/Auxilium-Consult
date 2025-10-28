@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -20,8 +21,15 @@ export default function Header() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link href="/" className="text-2xl font-bold text-primary-700">
-              Auxilium Consult
+            <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
+              <Image 
+                src="/Auxillium.png" 
+                alt="Auxilium Consult Logo" 
+                width={150}
+                height={60}
+                className="h-12 w-auto"
+                priority
+              />
             </Link>
           </div>
           
@@ -37,6 +45,12 @@ export default function Header() {
                   {item.name}
                 </Link>
               ))}
+              <Link 
+                href="/auth/admin-signin" 
+                className="border border-primary-600 text-primary-600 hover:bg-primary-50 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                Admin
+              </Link>
               <Link 
                 href="/client-portal" 
                 className="bg-primary-600 text-white hover:bg-primary-700 px-4 py-2 rounded-md text-sm font-medium transition-colors"
@@ -95,6 +109,19 @@ export default function Header() {
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: menuItems.length * 0.1 }}
+              >
+                <Link
+                  href="/auth/admin-signin"
+                  className="border border-primary-600 text-primary-600 hover:bg-primary-50 block px-3 py-2 rounded-md text-base font-medium text-center"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Admin Sign In
+                </Link>
+              </motion.div>
+              <motion.div
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: (menuItems.length + 1) * 0.1 }}
               >
                 <Link
                   href="/client-portal"

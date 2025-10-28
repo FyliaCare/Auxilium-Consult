@@ -20,6 +20,9 @@ const FAQ = dynamic(() => import('@/components/FAQ'), {
 const Contact = dynamic(() => import('@/components/Contact'), {
   loading: () => <div className="h-96 bg-gray-50 animate-pulse" />
 })
+const Partners = dynamic(() => import('@/components/Partners'), {
+  loading: () => <div className="h-96 bg-gray-50 animate-pulse" />
+})
 
 export default function Home() {
   return (
@@ -29,6 +32,7 @@ export default function Home() {
       <Services />
       <CaseStudies />
       <Testimonials />
+      <Partners />
       <FAQ />
       <Contact />
     </main>

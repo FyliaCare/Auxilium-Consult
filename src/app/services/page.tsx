@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import FeeStructure from '@/components/FeeStructure'
 
 export const metadata: Metadata = {
   title: 'Our Services - Auxilium Consult',
@@ -214,7 +215,7 @@ export default function ServicesPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Process</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              A structured approach to delivering results
+              A structured, 5-step approach to delivering results
             </p>
           </div>
 
@@ -223,40 +224,43 @@ export default function ServicesPage() {
               <div className="w-16 h-16 bg-primary-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
                 1
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Discovery</h3>
-              <p className="text-sm text-gray-600">Understanding your business and funding needs</p>
+              <h3 className="font-semibold text-gray-900 mb-2">Client Intake & Qualification</h3>
+              <p className="text-sm text-gray-600">Assess project readiness and funding objectives</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-primary-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
                 2
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Structuring</h3>
-              <p className="text-sm text-gray-600">Developing bankable project frameworks</p>
+              <h3 className="font-semibold text-gray-900 mb-2">Due Diligence & Structuring</h3>
+              <p className="text-sm text-gray-600">Prepare investor-ready documentation</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-primary-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
                 3
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Engagement</h3>
-              <p className="text-sm text-gray-600">Connecting with right investors and partners</p>
+              <h3 className="font-semibold text-gray-900 mb-2">Investor Engagement</h3>
+              <p className="text-sm text-gray-600">Match clients with vetted financiers and investors</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-primary-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
                 4
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Execution</h3>
-              <p className="text-sm text-gray-600">Managing negotiations and deal closure</p>
+              <h3 className="font-semibold text-gray-900 mb-2">Funding Facilitation</h3>
+              <p className="text-sm text-gray-600">Coordinate negotiations through deal closure</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-primary-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
                 5
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Support</h3>
-              <p className="text-sm text-gray-600">Ongoing advisory and monitoring</p>
+              <h3 className="font-semibold text-gray-900 mb-2">Post-Funding Support</h3>
+              <p className="text-sm text-gray-600">Monitor performance and provide continuous advisory</p>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Fee Structure Section */}
+      <FeeStructure />
 
       {/* CTA Section */}
       <section className="py-16 bg-primary-700 text-white">
